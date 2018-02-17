@@ -1,5 +1,6 @@
 package com.bignerdranch.android.bikeshare;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,45 +12,33 @@ import org.w3c.dom.Text;
 
 public class BikeShareActivity extends AppCompatActivity {
     // GUI variables
-    private Button addRide;
-    private TextView lastAdded;
-    private EditText newWhat, newWhere;
-
-    private Ride last = new Ride("", "");
+    private Button addRide, endRide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bike_share);
 
-        lastAdded = findViewById(R.id.last_ride);
-        updateUI();
+        // Buttons
+        addRide = findViewById(R.id.navigate_add_button);
+        endRide = findViewById(R.id.navigate_end_button);
 
-        // Button
-        addRide = findViewById(R.id.add_button);
-
-        // Texts
-        newWhat = findViewById(R.id.what_text);
-        newWhere = findViewById(R.id.where);
-
-        // view products click event
+        // click event - navigate to add ride
         addRide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if ((newWhat.getText().length() > 0) && (newWhere.getText().length() > 0)) {
-                    last.setBikeName(newWhat.getText().toString().trim());
-                    last.setStartRide(newWhere.getText().toString().trim());
-
-                    // reset text fields
-                    newWhat.setText("");
-                    newWhere.setText("");
-                    updateUI();
-                }
+                Intent intent = StartRideActivity.newIntent(BikeShareActivity.this);
+                startActivity(intent);
             }
         });
-    }
 
-    private void updateUI() {
-        lastAdded.setText(last.toString());
+        // click event - navigate to end ride
+        endRide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = EndRideActivity.newIntent(BikeShareActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 }

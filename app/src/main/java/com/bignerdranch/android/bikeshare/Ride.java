@@ -5,11 +5,12 @@ package com.bignerdranch.android.bikeshare;
  */
 
 public class Ride {
-    private String mBikeName, mStartRide;
+    private String mBikeName, mStartRide, mEndRide;
 
     public Ride(String name, String start) {
         mBikeName = name;
         mStartRide = start;
+        mEndRide = "";
     }
 
     public String getBikeName() {
@@ -28,7 +29,21 @@ public class Ride {
         mStartRide = startRide;
     }
 
-    public String toString() {
-        return mBikeName + " started at " + mStartRide;
+    public String toString(String stage) {
+        if (stage.equals("start"))
+            return mBikeName + " started at " + mStartRide;
+
+        if (stage.equals("end"))
+            return mBikeName + " ended at " + getEndRide();
+
+        return "Unexpected 'stage' string given to Ride toString()";
+    }
+
+    public String getEndRide() {
+        return mEndRide;
+    }
+
+    public void setEndRide(String endRide) {
+        mEndRide = endRide;
     }
 }
