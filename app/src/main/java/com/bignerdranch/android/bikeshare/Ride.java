@@ -7,10 +7,10 @@ package com.bignerdranch.android.bikeshare;
 public class Ride {
     private String mBikeName, mStartRide, mEndRide;
 
-    public Ride(String name, String start) {
+    public Ride(String name, String start, String end) {
         mBikeName = name;
         mStartRide = start;
-        mEndRide = "";
+        mEndRide = end;
     }
 
     public String getBikeName() {
@@ -29,14 +29,15 @@ public class Ride {
         mStartRide = startRide;
     }
 
-    public String toString(String stage) {
-        if (stage.equals("start"))
+    public String toString() {
+        if (mStartRide.equals("") && mEndRide.equals("")) // no start or end
+            return "";
+        else if (!mStartRide.equals("") && mEndRide.equals("")) // started but not ended
             return mBikeName + " started at " + mStartRide;
-
-        if (stage.equals("end"))
-            return mBikeName + " ended at " + getEndRide();
-
-        return "Unexpected 'stage' string given to Ride toString()";
+        else if (!mStartRide.equals("") && !mEndRide.equals("")) // started and ended
+            return mBikeName + " started at " + mStartRide + ", ended at " + mEndRide;
+        else
+            return mBikeName + " end at " + mEndRide; // ended but not started (??)
     }
 
     public String getEndRide() {
