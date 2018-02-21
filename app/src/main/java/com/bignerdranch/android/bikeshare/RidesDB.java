@@ -28,8 +28,20 @@ public class RidesDB {
         mAllRides.add(new Ride(what, where, ""));
     }
 
-    public void endRide(String what, String where) {
-        mAllRides.add(new Ride(what, "", where));
+    public boolean endRide(String what, String where) {
+        // find the ride that is ending
+        // (starting from the most recently-added ride, searching backwards)
+        for (int i = mAllRides.size() - 1; i >= 0; --i) {
+            Ride ride = mAllRides.get(i);
+
+            if (ride.getBikeName().equals(what) && ride.getEndRide().equals("")) {
+                ride.setEndRide(where);
+                return true;
+            }
+        }
+
+        // the ride being ended hadn't been started
+        return false;
     }
 
     private RidesDB(Context context) {

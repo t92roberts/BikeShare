@@ -37,7 +37,7 @@ public class Ride {
         else if (!mStartRide.equals("") && !mEndRide.equals("")) // started and ended
             return mBikeName + " started at " + mStartRide + ", ended at " + mEndRide;
         else
-            return mBikeName + " end at " + mEndRide; // ended but not started (??)
+            return mBikeName + " ended at " + mEndRide; // ended but not started (??)
     }
 
     public String getEndRide() {

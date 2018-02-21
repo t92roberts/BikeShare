@@ -41,13 +41,21 @@ public class EndRideActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if ((newWhat.getText().length() > 0) && (newWhere.getText().length() > 0)) {
-                    last.setBikeName(newWhat.getText().toString().trim());
-                    last.setEndRide(newWhere.getText().toString().trim());
+                    String bikeName = newWhat.getText().toString().trim();
+                    String where = newWhere.getText().toString().trim();
+
+                    if (ridesDB.endRide(bikeName, where)) {
+                        last.setBikeName(bikeName);
+                        last.setEndRide(where);
+                        updateUI();
+                    } else {
+                        String message = bikeName + " " + getString(R.string.bike_not_found);
+                        lastAdded.setText(message);
+                    }
 
                     // reset text fields
                     newWhat.setText("");
                     newWhere.setText("");
-                    updateUI();
                 }
             }
         });
