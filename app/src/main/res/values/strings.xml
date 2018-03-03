@@ -6,6 +6,6 @@
     <string name="where">Where?</string>
     <string name="add_ride">Add ride</string>
     <string name="end_ride">End Ride</string>
-    <string name="list_rides">List Rides</string>
+    <string name="refresh_rides">Refresh Rides</string>
     <string name="bike_not_found">is not being ridden</string>
 </resources>
