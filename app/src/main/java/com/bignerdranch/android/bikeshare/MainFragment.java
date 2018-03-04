@@ -14,7 +14,7 @@ import android.widget.ListView;
  * Created by Tom on 03/03/2018.
  */
 
-public class BikeShareFragment extends Fragment {
+public class MainFragment extends Fragment {
     // GUI variables
     private Button addRide, endRide, listRides;
     private static RidesDB ridesDB;
@@ -29,7 +29,7 @@ public class BikeShareFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_bikeshare, container, false);
+        View v = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Buttons
         addRide = v.findViewById(R.id.navigate_add_button);

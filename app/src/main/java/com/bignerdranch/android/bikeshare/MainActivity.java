@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-public class BikeShareActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,12 +13,12 @@ public class BikeShareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bike_share);
 
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+        Fragment fragment = fm.findFragmentById(R.id.fragment_main);
 
         if (fragment == null) {
-            fragment = new BikeShareFragment();
+            fragment = new MainFragment();
             fm.beginTransaction()
-                    .add(R.id.fragment_container, fragment)
+                    .add(R.id.fragment_main, fragment)
                     .commit();
         }
     }
