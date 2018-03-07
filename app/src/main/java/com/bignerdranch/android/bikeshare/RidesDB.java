@@ -48,7 +48,10 @@ public class RidesDB {
         mAllRides = new ArrayList<>();
 
         // Add some test rides
-        mAllRides.add(new Ride("Jimmy's bike", "ITU", "Nørreport"));
-        mAllRides.add(new Ride("Dave's bike", "Nørreport", "ITU"));
+        addRide("Jimmy's bike", "ITU");
+        endRide("Jimmy's bike", "Nørreport");
+
+        addRide("Dave's bike", "Nørreport");
+        endRide("Dave's bike", "ITU");
     }
 }

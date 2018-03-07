@@ -16,7 +16,7 @@ import android.widget.ListView;
 
 public class MainFragment extends Fragment {
     // GUI variables
-    private Button addRide, endRide, listRides;
+    private Button addRide, endRide;
     private static RidesDB ridesDB;
     private ArrayAdapter<Ride> listAdapter;
     private ListView mainListView;
@@ -34,7 +34,6 @@ public class MainFragment extends Fragment {
         // Buttons
         addRide = v.findViewById(R.id.navigate_add_button);
         endRide = v.findViewById(R.id.navigate_end_button);
-        listRides = v.findViewById(R.id.list_rides_button);
 
         // click event - navigate to add ride
         addRide.setOnClickListener(new View.OnClickListener() {
@@ -54,20 +53,16 @@ public class MainFragment extends Fragment {
             }
         });
 
-        // click event - list rides
-        listRides.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mainListView.setAdapter(listAdapter);
-            }
-        });
-
-
-
         listAdapter = new ArrayAdapter<>(getContext(), R.layout.list_item, ridesDB.getRidesDB());
         mainListView = v.findViewById(R.id.mainListView);
         mainListView.setAdapter(listAdapter);
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainListView.setAdapter(listAdapter);
     }
 }

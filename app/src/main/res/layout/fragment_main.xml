@@ -20,14 +20,6 @@
         android:layout_gravity="center"
         android:text="@string/end_ride" />
 
-    <!-- Button to list rides -->
-    <Button
-        android:id="@+id/list_rides_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/refresh_rides" />
-
     <!-- List of all rides -->
     <ListView
         android:id="@+id/mainListView"
