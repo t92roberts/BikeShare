@@ -1,74 +1,61 @@
 package com.bignerdranch.android.bikeshare;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 /**
- * Created by Tom on 04/03/2018.
+ * Created by Tom on 30/03/2018.
  */
 
 public class StartRideFragment extends Fragment {
-    // GUI variables
-    private Button addRide;
-    private TextView lastAdded;
-    private EditText newWhat, newWhere;
 
-    private static RidesDB ridesDB;
-    private Ride last = new Ride("", "", "");
+    private static RidesDB sharedRidesHistory;
+
+    // GUI
+    private Button startRide;
+    private TextView lastAdded;
+    private TextView bikeName, startLocation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedRidesHistory = RidesDB.get(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_start_ride, container, false);
-        ridesDB = RidesDB.get(getContext());
+        View view = inflater.inflate(R.layout.fragment_start_ride, container, false);
 
-        lastAdded = v.findViewById(R.id.last_ride);
-        updateUI();
+        // Top text showing the last ride started
+        lastAdded = view.findViewById(R.id.last_ride);
 
-        // Button
-        addRide = v.findViewById(R.id.add_button);
+        // Text inputs
+        bikeName = view.findViewById(R.id.text_bike_name);
+        startLocation = view.findViewById(R.id.text_start_location);
 
-        // Texts
-        newWhat = v.findViewById(R.id.what_text);
-        newWhere = v.findViewById(R.id.where);
+        // Buttons
+        startRide = view.findViewById(R.id.button_start_ride);
 
-        // view products click event
-        addRide.setOnClickListener(new View.OnClickListener() {
+        startRide.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if ((newWhat.getText().length() > 0) && (newWhere.getText().length() > 0)) {
-                    String bikeName = newWhat.getText().toString().trim();
-                    String where = newWhere.getText().toString().trim();
+            public void onClick(View v) {
+                String bikeNameString = bikeName.getText().toString().trim();
+                String startLocationString = startLocation.getText().toString().trim();
 
-                    ridesDB.addRide(bikeName, where);
+                boolean userHasInputData = bikeNameString.length() > 0 && startLocationString.length() > 0;
 
-                    last.setBikeName(bikeName);
-                    last.setStartRide(where);
-
-                    // reset text fields
-                    newWhat.setText("");
-                    newWhere.setText("");
-                    updateUI();
+                if (userHasInputData) {
+                    sharedRidesHistory.startRide(bikeNameString, startLocationString);
+                    lastAdded.setText(bikeNameString + " started at " + startLocationString);
                 }
             }
         });
 
-        return v;
-    }
-
-    private void updateUI() {
-        lastAdded.setText(last.toString());
+        return view;
     }
 }

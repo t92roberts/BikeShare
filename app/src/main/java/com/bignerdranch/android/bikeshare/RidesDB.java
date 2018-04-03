@@ -4,54 +4,72 @@ import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 /**
- * Created by Tom on 20/02/2018.
+ * Created by Tom on 30/03/2018.
  */
 
-public class RidesDB {
+public class RidesDB extends Observable {
     private static RidesDB sRidesDB;
 
-    public static RidesDB get(Context context) {
-        if (sRidesDB == null) sRidesDB = new RidesDB(context);
+    private List<Ride> mRidesHistory;
+
+    private RidesDB (Context context) {
+        // the singleton hasn't been created yet, create an empty list of rides
+        mRidesHistory = new ArrayList<>();
+
+        // Add some test rides
+        addFullRide(new Ride("Jimmy's bike", "ITU", "Nørreport"));
+        addFullRide(new Ride("Dave's bike", "Nørreport", "ITU"));
+
+    }
+
+    public synchronized static RidesDB get(Context context) {
+        if (sRidesDB == null) {
+            // singleton hasn't been created yet
+            sRidesDB = new RidesDB(context);
+        }
+
         return sRidesDB;
     }
 
-    private ArrayList<Ride> mAllRides;
-    private Ride mLastRide = new Ride("", "", "");
+    private synchronized void addToRideHistory(Ride ride) {
+        this.mRidesHistory.add(ride);
 
-    public List<Ride> getRidesDB() {
-        return mAllRides;
+        // Observer pattern - notify observers
+        this.setChanged();
+        notifyObservers();
     }
 
-    public void addRide(String what, String where) {
-        mAllRides.add(new Ride(what, where, ""));
+    public synchronized void startRide(String bikeName, String startLocation) {
+        Ride newRide = new Ride(bikeName, startLocation);
+        addToRideHistory(newRide);
     }
 
-    public boolean endRide(String what, String where) {
-        // find the ride that is ending
-        // (starting from the most recently-added ride, searching backwards)
-        for (int i = mAllRides.size() - 1; i >= 0; --i) {
-            Ride ride = mAllRides.get(i);
+    public synchronized void addFullRide (Ride newRide) {
+        addToRideHistory(newRide);
+    }
 
-            if (ride.getBikeName().equals(what) && ride.getEndRide().equals("")) {
-                ride.setEndRide(where);
-                return true;
+    public synchronized boolean endRide(String bikeName, String endLocation) {
+        // find the ride
+        for (int i = 0; i < mRidesHistory.size(); ++i) {
+            Ride ride = mRidesHistory.get(i);
+            if (ride.getBikeName().equals(bikeName) && ride.getEndLocation().equals("")) {
+                mRidesHistory.get(i).setEndLocation(endLocation);
+
+                // Observer pattern - notify observers
+                this.setChanged();
+                notifyObservers();
+
+                return true; // ride successfully ended
             }
         }
 
-        // the ride being ended hadn't been started
-        return false;
+        return false; // could not find the given bike
     }
 
-    private RidesDB(Context context) {
-        mAllRides = new ArrayList<>();
-
-        // Add some test rides
-        addRide("Jimmy's bike", "ITU");
-        endRide("Jimmy's bike", "Nørreport");
-
-        addRide("Dave's bike", "Nørreport");
-        endRide("Dave's bike", "ITU");
+    public synchronized List<Ride> getRidesHistory() {
+        return mRidesHistory;
     }
 }

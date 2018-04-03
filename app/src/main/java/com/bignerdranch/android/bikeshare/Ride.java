@@ -1,23 +1,28 @@
 package com.bignerdranch.android.bikeshare;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
- * Created by Tom on 06/02/2018.
+ * Created by Tom on 30/03/2018.
  */
 
 public class Ride {
-    private String mBikeName, mStartRide, mEndRide;
-    private Date mStartTime, mEndTime;
-    private String dateFormat = "EEEE, dd MMMM, yyyy";
-    private String timeFormat = "HH:mm:ss";
+    private String mBikeName, mStartLocation, mEndLocation;
 
-    public Ride(String name, String start, String end) {
-        mBikeName = name;
-        mStartRide = start;
-        mEndRide = end;
-        mStartTime = new Date();
+    public Ride() {
+        this.mBikeName = "";
+        this.mStartLocation = "";
+        this.mEndLocation = "";
+    }
+
+    public Ride(String bikeName, String startLocation) {
+        this.mBikeName = bikeName;
+        this.mStartLocation = startLocation;
+        this.mEndLocation = "";
+    }
+
+    public Ride(String bikeName, String startLocation, String endLocation) {
+        this.mBikeName = bikeName;
+        this.mStartLocation = startLocation;
+        this.mEndLocation = endLocation;
     }
 
     public String getBikeName() {
@@ -28,48 +33,33 @@ public class Ride {
         mBikeName = bikeName;
     }
 
-    public String getStartRide() {
-        return mStartRide;
+    public String getStartLocation() {
+        return mStartLocation;
     }
 
-    public void setStartRide(String startRide) {
-        mStartRide = startRide;
+    public void setStartLocation(String startLocation) {
+        mStartLocation = startLocation;
+    }
+
+    public String getEndLocation() {
+        return mEndLocation;
+    }
+
+    public void setEndLocation(String endLocation) {
+        mEndLocation = endLocation;
     }
 
     public String toString() {
-        if (mStartRide.equals("") && mEndRide.equals("")) // no start or end
-            return "";
-        else if (!mStartRide.equals("") && mEndRide.equals("")) // started but not ended
-            return mBikeName + " started at " + mStartRide
-                    + " on " + getStartTime(dateFormat)
-                    + " at " + getStartTime(timeFormat);
-        else if (!mStartRide.equals("") && !mEndRide.equals("")) // started and ended
-            return mBikeName + " started at " + mStartRide
-                    + " on " + getStartTime(dateFormat)
-                    + " at " + getStartTime(timeFormat)
-                    + ", ended at " + mEndRide
-                    + " on " + getEndTime(dateFormat)
-                    + " at " + getEndTime(timeFormat);
-        else
-            return mBikeName + " ended at " + mEndRide
-                    + " on " + getEndTime(dateFormat)
-                    + " at " + getEndTime(timeFormat); // ended but not started (??)
-    }
+        String message = this.mBikeName;
 
-    public String getEndRide() {
-        return mEndRide;
-    }
+        if (!this.mStartLocation.equals("")) {
+            message += " started at '" + this.mStartLocation + "'";
+        }
 
-    public void setEndRide(String endRide) {
-        mEndRide = endRide;
-        mEndTime = new Date();
-    }
+        if (!this.mEndLocation.equals("")) {
+            message += ", ended at '" + this.mEndLocation + "'";
+        }
 
-    public String getStartTime(String pattern) {
-        return new SimpleDateFormat(pattern).format(mStartTime);
-    }
-
-    public String getEndTime(String pattern) {
-        return new SimpleDateFormat(pattern).format(mEndTime);
+        return message;
     }
 }
