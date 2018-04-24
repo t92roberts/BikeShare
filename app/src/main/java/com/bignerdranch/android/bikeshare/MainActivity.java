@@ -44,7 +44,7 @@ public class MainActivity extends FragmentActivity {
         mainMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            recreate(); // restart the activity
+                recreate(); // restart the activity
             }
         });
 

@@ -36,30 +36,32 @@ public class ListFragment extends Fragment implements Observer {
     }
 
     public class RideHolder extends RecyclerView.ViewHolder {
-        //private TextView mBikeName, mStartLocation, mEndLocation;
-        private TextView mListItem;
         private Ride mRide;
+
+        private TextView mBikeName, mStartLocation, mStartTime, mEndLocation, mEndTime;
 
         public RideHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item, parent, false));
 
-            mListItem = itemView.findViewById(R.id.list_item_text);
+            mBikeName = itemView.findViewById(R.id.bike_name);
 
-            /*mBikeName = itemView.findViewById(R.id.bike_name);
             mStartLocation = itemView.findViewById(R.id.start_location);
-            mEndLocation = itemView.findViewById(R.id.end_location);*/
+            mStartTime = itemView.findViewById(R.id.start_time);
+
+            mEndLocation = itemView.findViewById(R.id.end_location);
+            mEndTime = itemView.findViewById(R.id.end_time);
         }
 
         public void bind(Ride ride) {
             mRide = ride;
 
-            mListItem.setText(mRide.toString());
+            mBikeName.setText(mRide.getBikeName());
 
-            /*mBikeName.setText(mRide.getBikeName());
-            mStartLocation.setText("started at " + mRide.getStartLocation());
+            mStartLocation.setText(mRide.getStartLocation());
+            mStartTime.setText(mRide.getFormattedStartDateTime());
 
-            if (!ride.getEndLocation().equals(""))
-                mEndLocation.setText("ended at " + mRide.getEndLocation());*/
+            mEndLocation.setText(mRide.getEndLocation());
+            mEndTime.setText(mRide.getFormattedEndDateTime());
         }
     }
 
@@ -94,7 +96,7 @@ public class ListFragment extends Fragment implements Observer {
 
         mRidesList = view.findViewById(R.id.list_recycler_view);
         mRidesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new RidesAdapter(sharedRidesHistory.getRidesHistory());
+        mAdapter = new RidesAdapter(sharedRidesHistory.getRidesDB());
         mRidesList.setAdapter(mAdapter);
 
         return view;

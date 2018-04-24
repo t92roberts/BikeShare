@@ -17,8 +17,7 @@ public class EndRideFragment extends Fragment {
 
     // GUI
     private Button endRide;
-    private TextView lastEnded;
-    private TextView bikeName, endLocation;
+    private TextView lastEnded, bikeName, endLocation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +34,11 @@ public class EndRideFragment extends Fragment {
 
         // Text inputs
         bikeName = view.findViewById(R.id.text_bike_name);
+        Ride activeRide = sharedRidesHistory.getActiveRide();
+        if (activeRide != null) {
+            bikeName.setText(activeRide.getBikeName());
+        }
+
         endLocation = view.findViewById(R.id.text_end_location);
 
         // Buttons
@@ -43,18 +47,14 @@ public class EndRideFragment extends Fragment {
         endRide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String bikeNameString = bikeName.getText().toString().trim();
                 String endLocationString = endLocation.getText().toString().trim();
 
-                boolean userHasInputData = bikeNameString.length() > 0 && endLocationString.length() > 0;
+                boolean userHasInputData = endLocationString.length() > 0;
+                Ride activeRide = sharedRidesHistory.getActiveRide();
 
-                if (userHasInputData) {
-                    boolean rideEndedSuccessfully = sharedRidesHistory.endRide(bikeNameString, endLocationString);
-
-                    if (rideEndedSuccessfully)
-                        lastEnded.setText(bikeNameString + " ended at " + endLocationString);
-                    else
-                        lastEnded.setText("No active ride found for bike '" + bikeNameString + "'");
+                if (userHasInputData && activeRide != null) {
+                    sharedRidesHistory.endRide(endLocationString);
+                    lastEnded.setText(activeRide.getBikeName() + " ended at " + endLocationString);
                 }
             }
         });
